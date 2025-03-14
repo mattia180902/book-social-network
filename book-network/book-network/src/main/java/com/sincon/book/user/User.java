@@ -111,7 +111,7 @@ public class User implements UserDetails, Principal{
         return enabled;
     }
 
-    private String fullName() {
+    /*private String fullName() {
         return firstName + " " + lastName;
-    }
+    }*/
 }
