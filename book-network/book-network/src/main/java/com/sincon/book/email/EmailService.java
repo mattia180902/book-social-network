@@ -62,5 +62,6 @@ public class EmailService {
         helper.setText(template, true);
 
         mailSender.send(mimeMessage);
+        //ciao sono il nuovo commit 
     }
 }
