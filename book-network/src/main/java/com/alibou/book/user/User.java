@@ -1,7 +1,5 @@
 package com.alibou.book.user;
 
-import com.alibou.book.book.Book;
-import com.alibou.book.history.BookTransactionHistory;
 import com.alibou.book.role.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,7 +7,6 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,9 +35,9 @@ import static jakarta.persistence.FetchType.EAGER;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-// @Entity
-// @Table(name = "_user")
-// @EntityListeners(AuditingEntityListener.class)
+@Entity
+@Table(name = "_user")
+@EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails, Principal {
 
     @Id
@@ -56,10 +53,6 @@ public class User implements UserDetails, Principal {
     private boolean enabled;
     @ManyToMany(fetch = EAGER)
     private List<Role> roles;
-    @OneToMany(mappedBy = "owner")
-    private List<Book> books;
-    @OneToMany(mappedBy = "user")
-    private List<BookTransactionHistory> histories;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
