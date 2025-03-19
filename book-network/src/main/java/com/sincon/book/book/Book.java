@@ -1,5 +1,6 @@
 package com.sincon.book.book;
 
+import java.beans.Transient;
 import java.util.List;
 
 import com.sincon.book.common.BaseEntity;
@@ -42,4 +43,18 @@ public class Book extends BaseEntity {
 
     @OneToMany(mappedBy = "book")
     private List<BookTransactionHistory> histories;
+
+    @Transient
+    public double getRate() {
+        if (feedbacks == null || feedbacks.isEmpty()) {
+            return 0.0;
+        }
+        var rate = this.feedbacks.stream()
+                .mapToDouble(Feedback::getNote)
+                .average()
+                .orElse(0.0);
+        // 3.2 --> 3.0 || 3.54 --> 4.0
+        double roundedRate = Math.round(rate * 10.0) / 10.0;
+        return roundedRate;
+    }
 }
