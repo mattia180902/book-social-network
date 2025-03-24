@@ -2,6 +2,7 @@ package com.sincon.book.book;
 
 import org.springframework.stereotype.Service;
 import com.sincon.book.history.BookTransactionHistory;
+import com.sincon.file.FileUtils;
 
 @Service
 public class BookMapper {
@@ -28,8 +29,7 @@ public class BookMapper {
                 .archived(book.isArchived())
                 .shareable(book.isShareable())
                 .owner(book.getOwner().fullName())
-                // todo implement this later
-                // .cover(null)
+                .cover(FileUtils.readFileFromLocation(book.getBookProfilePicture()))
                 .build();
     }
 
