@@ -1,4 +1,4 @@
-package com.sincon.file;
+package com.sincon.book.file;
 
 import java.io.File;
 import java.io.IOException;

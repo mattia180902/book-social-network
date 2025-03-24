@@ -1,27 +1,29 @@
 package com.sincon.book.book;
 
-import java.util.List;
-import java.util.Objects;
-
+import com.sincon.book.common.PageResponse;
+import com.sincon.book.exception.OperationNotPermittedException;
+import com.sincon.book.file.FileStorageService;
+import com.sincon.book.history.BookTransactionHistory;
+import com.sincon.book.history.BookTransactionHistoryRepository;
+import com.sincon.book.user.User;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sincon.book.common.PageResponse;
-import com.sincon.book.exception.OperationNotPermittedException;
-import com.sincon.book.history.BookTransactionHistory;
-import com.sincon.book.history.BookTransactionHistoryRepository;
-import com.sincon.book.user.User;
-import com.sincon.file.FileStorageService;
-
-import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.Objects;
 
 @Service
+@Slf4j
+@Transactional
 @RequiredArgsConstructor
 public class BookService {
 
@@ -78,12 +80,12 @@ public class BookService {
                 books.isLast());
     }
 
-    public PageResponse<BorroweBookResponse> findAllBorrowedBooks(int page, int size, Authentication connectedUser) {
+    public PageResponse<BorrowedBookResponse> findAllBorrowedBooks(int page, int size, Authentication connectedUser) {
         User user = ((User) connectedUser.getPrincipal());
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<BookTransactionHistory> allBorrowedBooks = transactionHistoryRepository.findAllBorrowedBooks(pageable,
                 user.getId());
-        List<BorroweBookResponse> bookResponse = allBorrowedBooks.stream()
+        List<BorrowedBookResponse> bookResponse = allBorrowedBooks.stream()
                 .map(bookMapper::toBorrowedBookResponse)
                 .toList();
         return new PageResponse<>(
@@ -96,12 +98,12 @@ public class BookService {
                 allBorrowedBooks.isLast());
     }
 
-    public PageResponse<BorroweBookResponse> findAllReturnedBooks(int page, int size, Authentication connectedUser) {
+    public PageResponse<BorrowedBookResponse> findAllReturnedBooks(int page, int size, Authentication connectedUser) {
         User user = ((User) connectedUser.getPrincipal());
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
         Page<BookTransactionHistory> allBorrowedBooks = transactionHistoryRepository.findAllReturnedBooks(pageable,
                 user.getId());
-        List<BorroweBookResponse> bookResponse = allBorrowedBooks.stream()
+        List<BorrowedBookResponse> bookResponse = allBorrowedBooks.stream()
                 .map(bookMapper::toBorrowedBookResponse)
                 .toList();
         return new PageResponse<>(

@@ -43,7 +43,7 @@ public class FeedbackService {
         return feedbackRepository.save(feedback).getId();
     }
 
-    public PageResponse<FeedbackResponse> findAllFeedbackByBook(Integer bookId, int page, int size,
+    public PageResponse<FeedbackResponse> findAllFeedbacksByBook(Integer bookId, int page, int size,
             Authentication connectedUser) {
         Pageable pageable = PageRequest.of(page, size);
         User user = ((User) connectedUser.getPrincipal());

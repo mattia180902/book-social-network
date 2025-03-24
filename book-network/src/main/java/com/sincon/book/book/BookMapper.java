@@ -2,7 +2,7 @@ package com.sincon.book.book;
 
 import org.springframework.stereotype.Service;
 import com.sincon.book.history.BookTransactionHistory;
-import com.sincon.file.FileUtils;
+import com.sincon.book.file.FileUtils;
 
 @Service
 public class BookMapper {
@@ -33,8 +33,8 @@ public class BookMapper {
                 .build();
     }
 
-    public BorroweBookResponse toBorrowedBookResponse(BookTransactionHistory history) {
-        return BorroweBookResponse.builder()
+    public BorrowedBookResponse toBorrowedBookResponse(BookTransactionHistory history) {
+        return BorrowedBookResponse.builder()
                 .id(history.getBook().getId())
                 .title(history.getBook().getTitle())
                 .authorName(history.getBook().getAuthorName())
@@ -42,8 +42,6 @@ public class BookMapper {
                 .rate(history.getBook().getRate())
                 .returned(history.isReturned())
                 .returnApproved(history.isReturnApproved())
-                // todo implement this later
-                // .cover(null)
                 .build();
     }
 }

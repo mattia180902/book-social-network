@@ -59,7 +59,7 @@ public class BookController {
     }
 
     @GetMapping("/borrowed")
-    public ResponseEntity<PageResponse<BorroweBookResponse>> findAllBorrowedBooks(
+    public ResponseEntity<PageResponse<BorrowedBookResponse>> findAllBorrowedBooks(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size,
             Authentication connectedUser) {
@@ -67,7 +67,7 @@ public class BookController {
     }
 
     @GetMapping("/returned")
-    public ResponseEntity<PageResponse<BorroweBookResponse>> findAllReturnedBooks(
+    public ResponseEntity<PageResponse<BorrowedBookResponse>> findAllReturnedBooks(
             @RequestParam(name = "page", defaultValue = "0", required = false) int page,
             @RequestParam(name = "size", defaultValue = "10", required = false) int size,
             Authentication connectedUser) {
@@ -84,7 +84,7 @@ public class BookController {
     @PatchMapping("/archived/{book-id}")
     public ResponseEntity<Integer> updateArchivedStatus(
             @PathVariable("book-id") Integer bookId,
-            Authentication connectedUser) { 
+            Authentication connectedUser) {
         return ResponseEntity.ok(bookService.updateArchivedStatus(bookId, connectedUser));
     }
 
@@ -111,12 +111,10 @@ public class BookController {
 
     @PostMapping(value = "/cover/{book-id}", consumes = "multipart/from-data")
     public ResponseEntity<?> uploadBookCoverPicture(
-        @PathVariable("book-id") Integer bookId,
-        @Parameter()
-        @RequestPart("file") MultipartFile file,
-        Authentication connectedUser
-    ) {
-        bookService.uploadBookCoverPicture(file,connectedUser, bookId);
+            @PathVariable("book-id") Integer bookId,
+            @Parameter() @RequestPart("file") MultipartFile file,
+            Authentication connectedUser) {
+        bookService.uploadBookCoverPicture(file, connectedUser, bookId);
         return ResponseEntity.accepted().build();
     }
-}   
+}

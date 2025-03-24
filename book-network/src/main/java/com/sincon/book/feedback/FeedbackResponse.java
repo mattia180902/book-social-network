@@ -16,4 +16,4 @@ public class FeedbackResponse {
     private double note;
     private String comment;
     private boolean ownFeedback;
-}   
+}

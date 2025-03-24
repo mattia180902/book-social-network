@@ -11,7 +11,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BorroweBookResponse {
+public class BorrowedBookResponse {
 
     private Integer id;
     private String title;
