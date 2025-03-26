@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PageResponse<T> {
 
-    private List<T> contact;
+    private List<T> content;
     private int number;
     private int size;
     private long totalElements;

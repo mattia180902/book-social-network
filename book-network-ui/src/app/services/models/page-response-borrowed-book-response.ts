@@ -4,7 +4,7 @@
 
 import { BorrowedBookResponse } from '../models/borrowed-book-response';
 export interface PageResponseBorrowedBookResponse {
-  contact?: Array<BorrowedBookResponse>;
+  content?: Array<BorrowedBookResponse>;
   first?: boolean;
   last?: boolean;
   number?: number;

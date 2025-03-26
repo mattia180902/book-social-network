@@ -757,7 +757,7 @@
             "PageResponseFeedbackResponse": {
                 "type": "object",
                 "properties": {
-                    "contact": {
+                    "content": {
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/FeedbackResponse"
@@ -831,7 +831,7 @@
             "PageResponseBookResponse": {
                 "type": "object",
                 "properties": {
-                    "contact": {
+                    "content": {
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/BookResponse"
@@ -892,7 +892,7 @@
             "PageResponseBorrowedBookResponse": {
                 "type": "object",
                 "properties": {
-                    "contact": {
+                    "content": {
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/BorrowedBookResponse"

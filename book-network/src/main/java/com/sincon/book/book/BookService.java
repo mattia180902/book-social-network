@@ -36,6 +36,7 @@ public class BookService {
         User user = ((User) connectedUser.getPrincipal());
         Book book = bookMapper.toBook(request);
         book.setOwner(user);
+        book.setCreatedBy(user.getId());
         return bookRepository.save(book).getId();
     }
 
@@ -46,9 +47,9 @@ public class BookService {
     }
 
     public PageResponse<BookResponse> findAllBooks(int page, int size, Authentication connectedUser) {
-        User user = ((User) connectedUser.getPrincipal());
+        //User user = ((User) connectedUser.getPrincipal());
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
-        Page<Book> books = bookRepository.findAllDisplayableBooks(pageable, user.getId());
+        Page<Book> books = bookRepository.findAllDisplayableBooks(pageable);
         List<BookResponse> bookResponse = books.stream()
                 .map(bookMapper::toBookResponse)
                 .toList();
@@ -163,6 +164,7 @@ public class BookService {
                 .book(book)
                 .returned(false)
                 .returnApproved(false)
+                .createdBy(user.getId())
                 .build();
 
         return transactionHistoryRepository.save(history).getId();

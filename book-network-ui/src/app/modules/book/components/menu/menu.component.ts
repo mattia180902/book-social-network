@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-menu',
@@ -7,17 +10,37 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements OnInit, OnDestroy {
+  private routerSubscription: Subscription | undefined;
+
+  constructor(private router: Router) {}
+
   ngOnInit(): void {
-    const linkColor = document.querySelectorAll(".nav-link");
-    linkColor.forEach(link => {
-      if(window.location.href.endsWith(link.getAttribute("href") || "")){
-        link.classList.add("active");
-      }
-      link.addEventListener("click", ()=> {
-        linkColor.forEach(l => l.classList.remove("active"));
-        link.classList.add("active");
+    this.routerSubscription = this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.updateActiveLink();
       });
+    this.updateActiveLink(); // Inizializza lo stato attivo al caricamento del componente
+  }
+
+  ngOnDestroy(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
+
+  private updateActiveLink(): void {
+    const linkColor = document.querySelectorAll(".nav-link");
+    const currentUrl = this.router.url; // Ottieni l'URL corrente dal router
+
+    linkColor.forEach(link => {
+      const linkPath = link.getAttribute("routerLink");
+      if (currentUrl.includes(linkPath || "")) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
     });
   }
 
