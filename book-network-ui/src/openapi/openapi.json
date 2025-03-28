@@ -111,7 +111,7 @@
                 ],
                 "requestBody": {
                     "content": {
-                        "multipart/from-data": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "file"
@@ -141,7 +141,7 @@
                 }
             }
         },
-        "/books/7borrowed/{book-id}": {
+        "/books/borrowed/{book-id}": {
             "post": {
                 "tags": [
                     "Book"

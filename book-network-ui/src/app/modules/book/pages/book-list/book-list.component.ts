@@ -18,7 +18,7 @@ import { BookCardComponent } from '../../components/book-card/book-card.componen
 export class BookListComponent implements OnInit {
   bookResponse: PageResponseBookResponse = {};
   page: number = 0;
-  size: number = 1;
+  size: number = 4;
   message: string = "";
   level: string = "success";
 

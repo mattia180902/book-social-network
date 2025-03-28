@@ -77,7 +77,7 @@ export class BookService extends BaseService {
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `uploadBookCoverPicture()` instead.
    *
-   * This method sends `multipart/from-data` and handles request body of type `multipart/from-data`.
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
   uploadBookCoverPicture$Response(params: UploadBookCoverPicture$Params, context?: HttpContext): Observable<StrictHttpResponse<{
 }>> {
@@ -88,7 +88,7 @@ export class BookService extends BaseService {
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `uploadBookCoverPicture$Response()` instead.
    *
-   * This method sends `multipart/from-data` and handles request body of type `multipart/from-data`.
+   * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
   uploadBookCoverPicture(params: UploadBookCoverPicture$Params, context?: HttpContext): Observable<{
 }> {
@@ -100,7 +100,7 @@ export class BookService extends BaseService {
   }
 
   /** Path part for operation `borrowBook()` */
-  static readonly BorrowBookPath = '/books/7borrowed/{book-id}';
+  static readonly BorrowBookPath = '/books/borrowed/{book-id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

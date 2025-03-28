@@ -18,7 +18,7 @@ import { BookCardComponent } from '../../components/book-card/book-card.componen
 export class MyBooksComponent implements OnInit {
   bookResponse: PageResponseBookResponse = {};
   page: number = 0;
-  size: number = 1;
+  size: number = 4;
 
   constructor(private bookService: BookService, private router: Router) {}
 

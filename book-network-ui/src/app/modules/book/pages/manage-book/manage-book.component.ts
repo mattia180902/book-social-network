@@ -25,52 +25,39 @@ export class ManageBookComponent {
 
   constructor(private bookService: BookService, private router: Router) {}
 
-  onFileSelector(event: any) {
+  saveBook() {
+    this.bookService.saveBook({
+      body: this.bookRequest
+    }).subscribe({
+      next: (bookId) => {
+        this.bookService.uploadBookCoverPicture({
+          'book-id': bookId,
+          body: {
+            file: this.selectedBookCover
+          }
+        }).subscribe({
+          next: () => {
+            this.router.navigate(['/books/my-books']);
+          }
+        });
+      },
+      error: (err) => {
+        console.log(err.error);
+        this.errorMsg = err.error.validationErrors;
+      }
+    });
+  }
+
+  onFileSelected(event: any) {
     this.selectedBookCover = event.target.files[0];
     console.log(this.selectedBookCover);
+
     if (this.selectedBookCover) {
-      const reader: FileReader = new FileReader();
+      const reader = new FileReader();
       reader.onload = () => {
         this.selectedPicture = reader.result as string;
       };
       reader.readAsDataURL(this.selectedBookCover);
     }
-  }
-
-  saveBook() {
-    this.bookService
-      .saveBook({ body: this.bookRequest })
-      .subscribe({
-        next: (bookId) => {
-          if (this.selectedBookCover) {
-            const formData = new FormData();
-            formData.append('file', this.selectedBookCover);
-            console.log('FormData:', formData); // Aggiungi questo log
-            this.bookService
-              .uploadBookCoverPicture({
-                'book-id': bookId,
-                body: formData,
-              })
-              .subscribe({
-                next: () => {
-                  this.router.navigate(['/books/my-books']);
-                },
-                error: (err) => {
-                  this.errorMsg = [
-                    'Failed to upload cover image. Book details were saved.',
-                  ];
-                  console.error(err);
-                },
-              });
-          } else {
-            this.router.navigate(['/books/my-books']);
-          }
-        },
-        error: (err) => {
-          this.errorMsg = err.error?.validationErrors || [
-            'Failed to save book details.',
-          ];
-        },
-      });
   }
 }

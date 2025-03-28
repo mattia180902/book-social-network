@@ -21,7 +21,7 @@ export function uploadBookCoverPicture(http: HttpClient, rootUrl: string, params
   const rb = new RequestBuilder(rootUrl, uploadBookCoverPicture.PATH, 'post');
   if (params) {
     rb.path('book-id', params['book-id'], {});
-    rb.body(params.body, 'multipart/from-data');
+    rb.body(params.body, 'multipart/form-data');
   }
 
   return http.request(
