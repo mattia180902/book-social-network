@@ -648,7 +648,7 @@
                         "maximum": 5,
                         "minimum": 0,
                         "type": "number",
-                        "format": "double"
+                        "format": "Double"
                     },
                     "comment": {
                         "type": "string"

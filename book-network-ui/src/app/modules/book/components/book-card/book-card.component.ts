@@ -13,7 +13,7 @@ import { RatingComponent } from '../../components/rating/rating.component';
 export class BookCardComponent implements OnInit {
   private _book: BookResponse = {};
   private _manage: boolean = false;
-  private _bookCover: string = 'assets/default-cover.jpg'; // Valore di fallback
+  private _bookCover: string | undefined
 
   @Input() set book(value: BookResponse) {
     this._book = value;
@@ -23,8 +23,12 @@ export class BookCardComponent implements OnInit {
     return this._book;
   }
 
-  get bookCover(): string {
+  get bookCover(): string | undefined {
     return this._bookCover;
+  }
+
+  get manage(): boolean {
+    return this._manage;
   }
 
   @Input() set manage(value: boolean) {
@@ -60,22 +64,22 @@ export class BookCardComponent implements OnInit {
   @Output() private details: EventEmitter<BookResponse> =
     new EventEmitter<BookResponse>();
 
-  onAddToWaitingList1() {
-    this.addToWaitingList.emit(this._book)
+  onAddToWaitingList() {
+    this.addToWaitingList.emit(this._book);
   }
   onBorrow() {
-    this.borrow.emit(this._book)
+    this.borrow.emit(this._book);
   }
   onShowDetails() {
-    this.details.emit(this._book)
+    this.details.emit(this._book);
   }
   onArchive() {
-    this.archive.emit(this._book)
+    this.archive.emit(this._book);
   }
   onShare() {
-    this.share.emit(this._book)
+    this.share.emit(this._book);
   }
   onEdit() {
-    this.edit.emit(this._book)
+    this.edit.emit(this._book);
   }
 }
