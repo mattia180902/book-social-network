@@ -1,5 +1,5 @@
 <h3>My books list</h3>
-<hr />
+<hr>
 <div class="d-flex justify-content-end mb-3">
   <a routerLink="/books/manage" class="btn btn-outline-primary">
     <i class="fas fa-plus"></i>&nbsp;New book
@@ -40,14 +40,16 @@
           <i class="fa-solid fa-angle-left"></i>
         </a>
       </li>
-      <li class="page-item" *ngFor="let pageIndex of pages">
+      <li
+        class="page-item"
+        *ngFor="let pageIndex of pages"
+      >
         <a
           (click)="gotToPage(pageIndex)"
           class="page-link"
           [class.active]="page === pageIndex"
           href="javascript:void(0)"
-          >{{ pageIndex + 1 }}</a
-        >
+        >{{ pageIndex + 1 }}</a>
       </li>
       <li class="page-item">
         <a

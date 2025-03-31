@@ -18,29 +18,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@Entity
 @Getter
 @Setter
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Book extends BaseEntity {
 
     private String title;
     private String authorName;
     private String isbn;
     private String synopsis;
-    private String bookProfilePicture;
+    private String bookCover;
     private boolean archived;
     private boolean shareable;
-
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
-
     @OneToMany(mappedBy = "book")
     private List<Feedback> feedbacks;
-
     @OneToMany(mappedBy = "book")
     private List<BookTransactionHistory> histories;
 
@@ -53,8 +50,9 @@ public class Book extends BaseEntity {
                 .mapToDouble(Feedback::getNote)
                 .average()
                 .orElse(0.0);
-        // 3.2 --> 3.0 || 3.54 --> 4.0
         double roundedRate = Math.round(rate * 10.0) / 10.0;
+
+        // Return 4.0 if roundedRate is less than 4.5, otherwise return 4.5
         return roundedRate;
     }
 }

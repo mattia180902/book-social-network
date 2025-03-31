@@ -15,13 +15,12 @@ export const httpTokenInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown
               Authorization: 'Bearer ' + token,
           }),
       });
-
       return next(authReq).pipe(
           catchError((error: HttpErrorResponse) => {
               if (error.status === 401) {
                   // Token non valido, reindirizza al login
-                  tokenService.removeToken();
-                  router.navigate(['/login']);
+                  tokenService.isTokenValid
+                  //router.navigate(['/login']);
               }
               return throwError(() => error);
           })

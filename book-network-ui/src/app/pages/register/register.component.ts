@@ -19,7 +19,6 @@ export class RegisterComponent {
     lastname: '',
     password: '',
   };
-
   errorMsg: Array<string> = [];
 
   constructor(
@@ -30,17 +29,20 @@ export class RegisterComponent {
   login() {
     this.router.navigate(['login']);
   }
+
   register() {
     this.errorMsg = [];
-    this.authService.register({
-      body: this.registerRequest
-    }).subscribe({
-      next: () => {
-        this.router.navigate(['activate-account']);
-      },
-      error: (err) => {
-        this.errorMsg = err.error.validationErrors;
-      }
-    })
+    this.authService
+      .register({
+        body: this.registerRequest,
+      })
+      .subscribe({
+        next: () => {
+          this.router.navigate(['activate-account']);
+        },
+        error: (err) => {
+          this.errorMsg = err.error.validationErrors;
+        },
+      });
   }
 }

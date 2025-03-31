@@ -13,29 +13,33 @@ import { BookService } from '../../../../services/services/book.service';
   styleUrl: './return-books.component.scss',
 })
 export class ReturnBooksComponent {
+  page = 0;
+  size = 5;
+  pages: any = [];
   returnedBooks: PageResponseBorrowedBookResponse = {};
-  page: number = 0;
-  size: number = 5;
-  message: string = '';
-  level: string = 'success';
-
-  constructor(private bookService: BookService) {}
+  message = '';
+  level: 'success' |'error' = 'success';
+  constructor(
+    private bookService: BookService
+  ) {
+  }
 
   ngOnInit(): void {
     this.findAllReturnedBooks();
   }
 
-  findAllReturnedBooks() {
-    this.bookService
-      .findAllBorrowedBooks({
-        page: this.page,
-        size: this.size,
-      })
-      .subscribe({
-        next: (resp) => {
-          this.returnedBooks = resp;
-        },
-      });
+  private findAllReturnedBooks() {
+    this.bookService.findAllReturnedBooks({
+      page: this.page,
+      size: this.size
+    }).subscribe({
+      next: (resp) => {
+        this.returnedBooks = resp;
+        this.pages = Array(this.returnedBooks.totalPages)
+          .fill(0)
+          .map((x, i) => i);
+      }
+    });
   }
 
   gotToPage(page: number) {
@@ -49,12 +53,12 @@ export class ReturnBooksComponent {
   }
 
   goToPreviousPage() {
-    this.page--;
+    this.page --;
     this.findAllReturnedBooks();
   }
 
   goToLastPage() {
-    this.page = (this.returnedBooks.totalPages as number) - 1;
+    this.page = this.returnedBooks.totalPages as number - 1;
     this.findAllReturnedBooks();
   }
 
@@ -64,25 +68,21 @@ export class ReturnBooksComponent {
   }
 
   get isLastPage() {
-    return this.page === (this.returnedBooks.totalPages as number) - 1;
+    return this.page === this.returnedBooks.totalPages as number - 1;
   }
 
   approveBookReturn(book: BorrowedBookResponse) {
     if (!book.returned) {
-      this.level = 'error';
-      this.message = 'Book is not yet returned';
       return;
     }
-    this.bookService
-      .approveReturnBorrowBook({
-        'book-id': book.id as number,
-      })
-      .subscribe({
-        next: () => {
-          this.level = 'success';
-          this.message = 'Book return approved';
-          this.findAllReturnedBooks();
-        },
-      });
+    this.bookService.approveReturnBorrowBook({
+      'book-id': book.id as number
+    }).subscribe({
+      next: () => {
+        this.level = 'success';
+        this.message = 'Book return approved';
+        this.findAllReturnedBooks();
+      }
+    });
   }
 }

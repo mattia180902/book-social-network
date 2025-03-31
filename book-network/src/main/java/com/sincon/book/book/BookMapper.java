@@ -6,11 +6,11 @@ import com.sincon.book.file.FileUtils;
 
 @Service
 public class BookMapper {
-
     public Book toBook(BookRequest request) {
         return Book.builder()
                 .id(request.id())
                 .title(request.title())
+                .isbn(request.isbn())
                 .authorName(request.authorName())
                 .synopsis(request.synopsis())
                 .archived(false)
@@ -29,7 +29,7 @@ public class BookMapper {
                 .archived(book.isArchived())
                 .shareable(book.isShareable())
                 .owner(book.getOwner().fullName())
-                .cover(FileUtils.readFileFromLocation(book.getBookProfilePicture()))
+                .cover(FileUtils.readFileFromLocation(book.getBookCover()))
                 .build();
     }
 

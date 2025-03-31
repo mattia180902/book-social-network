@@ -61,7 +61,47 @@
                 }
             }
         },
-        "/books/path": {
+        "/books": {
+            "get": {
+                "tags": [
+                    "Book"
+                ],
+                "operationId": "findAllBooks",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageResponseBookResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Book"
@@ -141,7 +181,7 @@
                 }
             }
         },
-        "/books/borrowed/{book-id}": {
+        "/books/borrow/{book-id}": {
             "post": {
                 "tags": [
                     "Book"
@@ -412,48 +452,6 @@
                 }
             }
         },
-        "/books": {
-            "get": {
-                "tags": [
-                    "Book"
-                ],
-                "operationId": "findAllBooks",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32",
-                            "default": 0
-                        }
-                    },
-                    {
-                        "name": "size",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int32",
-                            "default": 10
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/PageResponseBookResponse"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/books/{book-id}": {
             "get": {
                 "tags": [
@@ -648,7 +646,7 @@
                         "maximum": 5,
                         "minimum": 0,
                         "type": "number",
-                        "format": "Double"
+                        "format": "double"
                     },
                     "comment": {
                         "type": "string"

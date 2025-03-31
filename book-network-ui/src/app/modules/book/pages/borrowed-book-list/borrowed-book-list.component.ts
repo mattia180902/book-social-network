@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {
-  BorrowedBookResponse,
-  FeedbackRequest,
-  PageResponseBorrowedBookResponse,
-} from '../../../../services/models';
 import { BookService, FeedbackService } from '../../../../services/services';
 import { FormsModule, NgModel } from '@angular/forms';
 import { RatingComponent } from '../../components/rating/rating.component';
+import { PageResponseBorrowedBookResponse } from '../../../../services/models/page-response-borrowed-book-response';
+import { BookResponse } from '../../../../services/models/book-response';
+import { FeedbackRequest } from '../../../../services/models/feedback-request';
+import { BorrowedBookResponse } from '../../../../services/models/borrowed-book-response';
 
 @Component({
   selector: 'app-borrowed-book-list',
@@ -17,41 +16,33 @@ import { RatingComponent } from '../../components/rating/rating.component';
   styleUrl: './borrowed-book-list.component.scss',
 })
 export class BorrowedBookListComponent implements OnInit {
+  page = 0;
+  size = 5;
+  pages: any = [];
   borrowedBooks: PageResponseBorrowedBookResponse = {};
-  page: number = 0;
-  size: number = 5;
-  selectedBook: BorrowedBookResponse | undefined = undefined;
-  feedbackRequest: FeedbackRequest = {
-    bookId: 0,
-    comment: '',
-    note: 0,
-  };
-
+  selectedBook: BookResponse | undefined = undefined;
+  feedbackRequest: FeedbackRequest = {bookId: 0, comment: '', note: 0};
   constructor(
     private bookService: BookService,
     private feedbackService: FeedbackService
-  ) {}
-
+  ) {
+  }
   ngOnInit(): void {
     this.findAllBorrowedBooks();
   }
 
-  findAllBorrowedBooks() {
-    this.bookService
-      .findAllBorrowedBooks({
-        page: this.page,
-        size: this.size,
-      })
-      .subscribe({
-        next: (resp) => {
-          this.borrowedBooks = resp;
-        },
-      });
-  }
-
-  returnBorrowedBoook(book: BorrowedBookResponse) {
-    this.selectedBook = book;
-    this.feedbackRequest.bookId = book.id as number;
+  private findAllBorrowedBooks() {
+    this.bookService.findAllBorrowedBooks({
+      page: this.page,
+      size: this.size
+    }).subscribe({
+      next: (resp) => {
+        this.borrowedBooks = resp;
+        this.pages = Array(this.borrowedBooks.totalPages)
+          .fill(0)
+          .map((x, i) => i);
+      }
+    });
   }
 
   gotToPage(page: number) {
@@ -65,12 +56,12 @@ export class BorrowedBookListComponent implements OnInit {
   }
 
   goToPreviousPage() {
-    this.page--;
+    this.page --;
     this.findAllBorrowedBooks();
   }
 
   goToLastPage() {
-    this.page = (this.borrowedBooks.totalPages as number) - 1;
+    this.page = this.borrowedBooks.totalPages as number - 1;
     this.findAllBorrowedBooks();
   }
 
@@ -80,32 +71,34 @@ export class BorrowedBookListComponent implements OnInit {
   }
 
   get isLastPage() {
-    return this.page === (this.borrowedBooks.totalPages as number) - 1;
+    return this.page === this.borrowedBooks.totalPages as number - 1;
+  }
+
+  returnBorrowedBook(book: BorrowedBookResponse) {
+    this.selectedBook = book;
+    this.feedbackRequest.bookId = book.id as number;
   }
 
   returnBook(withFeedback: boolean) {
-    this.bookService
-      .returnBorrowBook({
-        'book-id': this.selectedBook?.id as number,
-      })
-      .subscribe({
-        next: () => {
-          if (withFeedback) {
-            this.giveFeedback();
-          }
-          this.selectedBook = undefined;
-          this.findAllBorrowedBooks();
-        },
-      });
-  }
-
-  giveFeedback() {
-    this.feedbackService.saveFeedback({
-      body: this.feedbackRequest,
+    this.bookService.returnBorrowBook({
+      'book-id': this.selectedBook?.id as number
     }).subscribe({
       next: () => {
-
+        if (withFeedback) {
+          this.giveFeedback();
+        }
+        this.selectedBook = undefined;
+        this.findAllBorrowedBooks();
       }
-    })
+    });
+  }
+
+  private giveFeedback() {
+    this.feedbackService.saveFeedback({
+      body: this.feedbackRequest
+    }).subscribe({
+      next: () => {
+      }
+    });
   }
 }

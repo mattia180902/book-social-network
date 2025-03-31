@@ -11,7 +11,9 @@ import { RequestBuilder } from '../../request-builder';
 
 export interface UploadBookCoverPicture$Params {
   'book-id': number;
-      body?: FormData
+      body?: {
+'file': Blob;
+}
 }
 
 export function uploadBookCoverPicture(http: HttpClient, rootUrl: string, params: UploadBookCoverPicture$Params, context?: HttpContext): Observable<StrictHttpResponse<{

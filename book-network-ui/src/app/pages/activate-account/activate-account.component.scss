@@ -1,14 +1,16 @@
+/* account-activation.component.css */
+
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-}
-
-.activate-message, .activate-error {
+  }
+  
+  .activation-message, .activation-error {
     text-align: center;
-}
-
-.activate-error {
+  }
+  
+  .activation-error {
     color: red;
-}
+  }

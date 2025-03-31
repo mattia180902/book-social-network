@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FeedbackResponse {
 
-    private double note;
+    private Double note;
     private String comment;
     private boolean ownFeedback;
 }

@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 
 import static jakarta.persistence.FetchType.EAGER;
 
+
 @Getter
 @Setter
 @SuperBuilder
@@ -54,13 +55,10 @@ public class User implements UserDetails, Principal {
     private String password;
     private boolean accountLocked;
     private boolean enabled;
-
     @ManyToMany(fetch = EAGER)
     private List<Role> roles;
-
     @OneToMany(mappedBy = "owner")
     private List<Book> books;
-
     @OneToMany(mappedBy = "user")
     private List<BookTransactionHistory> histories;
 

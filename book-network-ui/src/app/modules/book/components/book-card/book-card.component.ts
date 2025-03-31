@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BookResponse } from '../../../../services/models';
 import { CommonModule } from '@angular/common';
 import { RatingComponent } from '../../components/rating/rating.component';
@@ -10,10 +10,10 @@ import { RatingComponent } from '../../components/rating/rating.component';
   templateUrl: './book-card.component.html',
   styleUrl: './book-card.component.scss',
 })
-export class BookCardComponent implements OnInit {
+export class BookCardComponent{
   private _book: BookResponse = {};
   private _manage: boolean = false;
-  private _bookCover: string | undefined
+  private _bookCover: string | undefined;
 
   @Input() set book(value: BookResponse) {
     this._book = value;
@@ -24,7 +24,14 @@ export class BookCardComponent implements OnInit {
   }
 
   get bookCover(): string | undefined {
-    return this._bookCover;
+    if (this.book.cover) {
+      return 'data:image/jpg;base64,' + this._book.cover;
+    } else {
+      const width = 1900;
+      const height = 800;
+      const randomId = Math.floor(Math.random() * 1000); // Genera un ID casuale
+      return `https://picsum.photos/${width}/${height}?random=${randomId}`;
+    }
   }
 
   get manage(): boolean {
@@ -33,22 +40,6 @@ export class BookCardComponent implements OnInit {
 
   @Input() set manage(value: boolean) {
     this._manage = value;
-  }
-
-  ngOnInit(): void {
-    if (this.book.cover) {
-      this._bookCover = 'data:image/jpg;base64,' + this._book.cover;
-    } else {
-      this.getRandomLoremPicsumImage();
-    }
-  }
-
-  getRandomLoremPicsumImage(): void {
-    const width = 1900;
-    const height = 800;
-    const randomId = Math.floor(Math.random() * 1000); // Genera un ID casuale
-
-    this._bookCover = `https://picsum.photos/${width}/${height}?random=${randomId}`;
   }
 
   @Output() private share: EventEmitter<BookResponse> =
