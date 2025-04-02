@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: false
     properties:
       hibernate:
@@ -15,28 +15,23 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   mail:
     host: smtp.gmail.com
-    port: 465
-    username: mattia
-    password: mattia
+    port: 587
+    username: mcolucci@studenti.apuliadigitalmaker.it
+    password: degk kuoc dzgp kmxo
     properties:
       mail:
         smtp:
           auth: true
-        ssl:
-          enable: true
-          trust: "*"
-        starttls:
-          enabled: true
+          starttls:
+            enable: true
     protocol: smtp
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "http://localhost:9090/realms/book-social-network"
 
 application:
-  security:
-    jwt:
-      secret-key: 99e85d382860725f2acae9b38a31d0a5c867740eaa4e56e6d0eb3687c47ad07f
-      expiration: 8640000
-  mailing:
-    frontend:
-      activation-url: http://localhost:4200/activate-account
   file:
     uploads:
       photos-output-path: ./uploads

@@ -8,12 +8,12 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+RUN npm run build --browser
 
 FROM nginx:alpine
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=build-stage /app/dist/book-network-ui /usr/share/nginx/html
+COPY --from=build-stage /app/dist/book-network-ui/browser /usr/share/nginx/html
 
 EXPOSE 80

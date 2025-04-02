@@ -1,7 +1,6 @@
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule,} from '@angular/common/http';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { httpTokenInterceptor } from './services/interceptor/http-token.interceptor';
 
 @Component({
   selector: 'app-root',

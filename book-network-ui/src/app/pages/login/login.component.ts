@@ -1,29 +1,34 @@
-import { Component } from '@angular/core';
-import { AuthenticationRequest } from '../../services/models';
+import { Component, OnInit } from '@angular/core';
+// import { AuthenticationRequest } from '../../services/models';
 import { FormsModule } from '@angular/forms';
-import { NgFor, NgIf } from '@angular/common';
+/* import { NgFor, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/services';
-import { TokenService } from '../../services/token/token.service';
+import { TokenService } from '../../services/token/token.service'; */
+import { KeycloakService } from '../../services/keycloak/keycloak.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, NgIf, NgFor],
+  imports: [FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
-  authRequest: AuthenticationRequest = { email: '', password: '' };
-  errorMsg: Array<string> = [];
+export class LoginComponent implements OnInit{
+
+  // authRequest: AuthenticationRequest = { email: '', password: '' };
+  // errorMsg: Array<string> = [];
 
   constructor(
-    private router: Router,
-    private authService: AuthenticationService,
-    private tokenService: TokenService
+    private keycloakService: KeycloakService
   ) {}
 
-  login() {
+  async ngOnInit(): Promise<void> {
+    await this.keycloakService.init();
+    await this.keycloakService.login();
+  }
+
+  /* login() {
     this.errorMsg = [];
     this.authService
       .authenticate({
@@ -47,5 +52,5 @@ export class LoginComponent {
 
   register() {
     this.router.navigate(['register']);
-  }
+  } */
 }
